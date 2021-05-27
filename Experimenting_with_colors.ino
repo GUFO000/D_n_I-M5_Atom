@@ -9,7 +9,7 @@ void setup(){
   // LCD display
   //M5.Lcd.print("Hello World!");
   //M5.Lcd.print("M5Stack is running successfully!");
-
+}
   CRGB colors[] = {
     0xff0000,
     0xff8000,
@@ -25,16 +25,17 @@ void setup(){
     0xff0080
   };
   //M5.dis.drawpix(0,0,0xffffff);
+int ptr =0;
 
-}
 
 // the loop routine runs over and over again forever
 void loop() {
-  int x,y;
-  
+  int x,y,p;
+  p=ptr;
   for(x=0;x<5;x++){
     for(y=0;y<5;y++){
-        M5.dis.drawpix(x,y,0x17A1A5);
+        M5.dis.drawpix(x,y,colors[p]);
+        p= (p +1)%11;
       }
     }
   delay(100);
