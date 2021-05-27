@@ -1,9 +1,14 @@
-void setup() {
-  // put your setup code here, to run once:
+#include <M5Atom.h>
+
+void setup(){
+
+  M5.begin(true,false,true);
 
 }
 
+
 void loop() {
-  // put your main code here, to run repeatedly:
+ 
+  delay(100);
 
 }
