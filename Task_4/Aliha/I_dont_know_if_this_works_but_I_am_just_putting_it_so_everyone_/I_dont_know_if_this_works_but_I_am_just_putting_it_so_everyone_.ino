@@ -1,4 +1,4 @@
-[Some code I found online featuring some alterations I have made] I dont have the Atom so I dont exactly know how much this works.
+//[Some code I found online featuring some alterations I have made] I dont have the Atom so I dont exactly know how much this works.
 
 #include <M5Atom.h>
 #include <FastLED.H>
