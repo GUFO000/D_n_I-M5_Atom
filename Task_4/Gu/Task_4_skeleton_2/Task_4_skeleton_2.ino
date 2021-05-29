@@ -72,14 +72,9 @@ void loop() {
 
     case 3:
       // Set LEDs for blinking red
-      p = 2;
+      p = 1;
       Blink  = 1;
-      //      for (x = 0; x < 5; x++) {
-      //        for (y = 0; y < 5; y++) {
-      //          M5.dis.drawpix(x, y, colors[p]);
-      //          delay(40);
-      //        }
-      //      }
+
       for (x = 0; x < 5; x++) {
         for (y = 0; y < 5; y++) {
           M5.dis.drawpix(x, y, colors[p]);
@@ -93,7 +88,29 @@ void loop() {
           }
         }
         Blink = 0;
-        Delay(2500);
+        Delay(2000);
+      }
+      break;
+
+    case 4:
+      // Set LEDs for blinking red
+      p = 0;
+      Blink  = 1;
+
+      for (x = 0; x < 5; x++) {
+        for (y = 0; y < 5; y++) {
+          M5.dis.drawpix(x, y, colors[p]);
+        }
+      }
+      if (accZ > 1 || accZ < -1) {
+        p = 0;
+        for (x = 0; x < 5; x++) {
+          for (y = 0; y < 5; y++) {
+            M5.dis.drawpix(x, y, colors[p]);
+          }
+        }
+        Blink = 0;
+        Delay(2000);
       }
       break;
 
