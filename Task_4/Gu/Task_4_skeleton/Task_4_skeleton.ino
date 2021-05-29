@@ -62,12 +62,17 @@ void loop() {
         }
       }
       break;
+
+      //count exceeded possible click options
+    default:
+      count = 0;
+
   }
 
   Serial.println(count);
 
   //M5.dis.clear();
-
+  M5.update();
   delay(200);
 
 
