@@ -15,7 +15,7 @@ void setup() {
 CRGB colors[] = {
   0xfe0000, // red
   0x1ED35E, // green
-  0x17A1A5 // blue
+  0xDCDEE2 // blue
 };
 
 float accX, accY, accZ;
@@ -33,6 +33,9 @@ void loop() {
     count++;
     Serial.println("Button was pressed");
   }
+
+  M5.IMU.getAccelData(&accX, &accY, &accZ);
+  Serial.println(accZ);
 
   // checking how many time the button was pressed
   switch (count) {
@@ -71,21 +74,27 @@ void loop() {
       // Set LEDs for blinking red
       p = 2;
       Blink  = 1;
-//      for (x = 0; x < 5; x++) {
-//        for (y = 0; y < 5; y++) {
-//          M5.dis.drawpix(x, y, colors[p]);
-//          delay(40);
-//        }
-//      }
+      //      for (x = 0; x < 5; x++) {
+      //        for (y = 0; y < 5; y++) {
+      //          M5.dis.drawpix(x, y, colors[p]);
+      //          delay(40);
+      //        }
+      //      }
       for (x = 0; x < 5; x++) {
         for (y = 0; y < 5; y++) {
           M5.dis.drawpix(x, y, colors[p]);
         }
       }
-      if(accZ >5){
-        Blink = 0;
-        Delay(1000);
+      if (accZ > 1 || accZ < -1) {
+        p = 1;
+        for (x = 0; x < 5; x++) {
+          for (y = 0; y < 5; y++) {
+            M5.dis.drawpix(x, y, colors[p]);
+          }
         }
+        Blink = 0;
+        Delay(2500);
+      }
       break;
 
 
@@ -94,7 +103,7 @@ void loop() {
       count = 0;
   }
 
-  Serial.println(count);
+  //Serial.println(count);
 
   if (Blink) {
     //keep lights on and check button
@@ -110,16 +119,16 @@ void loop() {
       count++;
     }
 
-    //reset to false 
-    Blink = 0;
+    //reset to false
+    //Blink = 0;
   }
   else {
     M5.dis.clear();
   }
 
   M5.update();
-  
-  if (Delay(2)) {
+
+  if (Delay(200)) {
     count++;
   }
 }
@@ -136,10 +145,12 @@ bool Delay(int num) {
     }
     delay(10);
     time_passed = time_passed + 10;
-    Serial.println("This is the time passed so far");
-    Serial.println(time_passed);
-    Serial.println("This is the check");
-    Serial.println(check_pressed);
+
+    //    Serial.println("This is the time passed so far");
+    //    Serial.println(time_passed);
+    //    Serial.println("This is the check");
+    //    Serial.println(check_pressed);
+
     M5.update();
   }
   return check_pressed;

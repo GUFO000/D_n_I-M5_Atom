@@ -15,11 +15,11 @@ void setup() {
 CRGB colors[] = {
   0xfe0000, // red
   0x1ED35E, // green
-  0xDCDEE2 // blue 
+  0xDCDEE2 // blue
 };
 
 float accX, accY, accZ;
-int time_blink = 300;
+int time_blink = 500;
 int x, y, p;
 int count = 0;
 bool Blink = 0;
@@ -69,7 +69,7 @@ void loop() {
       break;
 
     case 3:
-      // red
+      // white
       p = 2;
       Blink  = 1;
       for (x = 0; x < 5; x++) {
@@ -77,13 +77,13 @@ void loop() {
           M5.dis.drawpix(x, y, colors[p]);
         }
       }
+      break;
     //count exceeded possible click options
     default:
       count = 0;
   }
 
-  Serial.println(count);
-
+  
   if (Blink) {
     if (Delay(time_blink)) {
       count++;
@@ -99,9 +99,9 @@ void loop() {
   }
 
   M5.update();
-//  if (Delay(200)) {
-//    count++;
-//  }
+    if (Delay(200)) {
+      count++;
+    }
 }
 
 
@@ -109,18 +109,18 @@ bool Delay(int num) {
   bool check_pressed = 0;
   int time_passed = 0;
 
-  while (check_pressed != 1 && time_passed < num) {
+  while (check_pressed < 1 && time_passed < num) {
+    check_pressed = 0;
     if (M5.Btn.wasPressed()) {
       check_pressed = 1;
-
     }
     delay(10);
     time_passed = time_passed + 10;
-    Serial.println("This is the time passed so far");
-    Serial.println(time_passed);
-    Serial.println("This is the check");
-    Serial.println(check_pressed);
     M5.update();
   }
+  Serial.println("This is the time passed so far");
+  Serial.println(time_passed);
+  Serial.println("This is the check");
+  Serial.println(check_pressed);
   return check_pressed;
 }
