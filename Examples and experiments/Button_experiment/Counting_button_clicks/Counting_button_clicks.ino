@@ -15,6 +15,7 @@ void setup(){
 void loop() {
 
   if(M5.Btn.wasPressed()) {
+    Serial.println("Button was pressed");
     mat = 1;
     for(x=0;x<5;x++){
       for(y=0;y<5;y++){
