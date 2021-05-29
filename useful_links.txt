@@ -1,3 +1,5 @@
 https://forum.arduino.cc/t/detecting-a-button-while-a-for-loop-runs/490830
+https://docs.m5stack.com/en/api/imu
+https://github.com/lukasmaximus89/M5Atom-Resources/commit/263f8213575713f93ab3a8893212373939767785
 
 Delay() function idea
