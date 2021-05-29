@@ -19,8 +19,10 @@ CRGB colors[] = {
 };
 
 float accX, accY, accZ;
+int time_blink = 300;
 int x, y, p;
 int count = 0;
+bool Blink = 0;
 
 
 void loop() {
@@ -46,6 +48,7 @@ void loop() {
 
       // red
       p = 0;
+      Blink  = 1;
       for (x = 0; x < 5; x++) {
         for (y = 0; y < 5; y++) {
           M5.dis.drawpix(x, y, colors[p]);
@@ -56,6 +59,7 @@ void loop() {
     case 2:
       // red
       p = 1;
+      Blink  = 1;
       for (x = 0; x < 5; x++) {
         for (y = 0; y < 5; y++) {
           M5.dis.drawpix(x, y, colors[p]);
@@ -63,7 +67,7 @@ void loop() {
       }
       break;
 
-      //count exceeded possible click options
+    //count exceeded possible click options
     default:
       count = 0;
 
@@ -71,7 +75,16 @@ void loop() {
 
   Serial.println(count);
 
-  //M5.dis.clear();
+  if (Blink) {
+    delay(time_blink);
+    M5.dis.clear();
+    delay(time_blink-200);
+    Blink = 0;
+  }
+  else {
+    M5.dis.clear();
+  }
+
   M5.update();
   delay(200);
 
