@@ -55,10 +55,10 @@ void loop() {
   }
 
 
-  Serial.println("This was the new X position ");
-  Serial.println(accX);
-  Serial.println("This was the new Y position ");
-  Serial.println(accY);
+  Serial.println("This was the new X acc ");
+  Serial.println(accZ);
+  //Serial.println("This was the new Y position ");
+  //Serial.println(accY);
 
   M5.dis.clear();
   
