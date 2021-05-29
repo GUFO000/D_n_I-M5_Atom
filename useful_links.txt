@@ -1,0 +1,3 @@
+https://forum.arduino.cc/t/detecting-a-button-while-a-for-loop-runs/490830
+
+Delay() function idea
