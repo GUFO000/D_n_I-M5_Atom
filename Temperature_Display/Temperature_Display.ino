@@ -6,6 +6,7 @@
  #include <Adafruit_NeoPixel.h>
 
  #define PIN 27
+ int count = 0;
 
  // MATRIX DECLARATION:
  // Parameter 1 = width of NeoPixel matrix
@@ -56,6 +57,8 @@
  float temp;
 
  void loop() {
+
+  
   M5.IMU.getTempData(&temp);
   Serial.println(temp);
    matrix.fillScreen(0);
@@ -67,6 +70,7 @@
      matrix.setTextColor(colors[pass]);
    }
    matrix.show();
-   delay(80);
+   delay(500);
+  }
 //   M5.Update ();
  }
