@@ -114,8 +114,8 @@ bool check_from_sleep() {
   if (ahrsY < -170) {
     test = true;
   }
-//  if (accZ > 0.1) {
-//    test = true;
-//  }
+  if (accZ > 0.1) {
+    test = true;
+  }
   return test;
 }
