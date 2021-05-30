@@ -3,7 +3,7 @@
  int a,b;
 
  void setup() {
-   M5.begin(true, false, true);
+   M5.begin(true, true, true);
    Serial.begin(115200);
  }
 
