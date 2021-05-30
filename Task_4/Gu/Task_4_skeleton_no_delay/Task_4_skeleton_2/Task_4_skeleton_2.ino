@@ -80,7 +80,7 @@ void loop() {
           M5.dis.drawpix(x, y, colors[p]);
         }
       }
-      if (accZ > 0.5 || accZ < -0.5) {
+      if (accZ > 1 || accZ < -1) {
         p = 1;
         for (x = 0; x < 5; x++) {
           for (y = 0; y < 5; y++) {
@@ -102,7 +102,7 @@ void loop() {
           M5.dis.drawpix(x, y, colors[p]);
         }
       }
-      if (accZ > 0.5 || accZ < -0.5) {
+      if (accZ > 1 || accZ < -1) {
         p = 0;
         for (x = 0; x < 5; x++) {
           for (y = 0; y < 5; y++) {

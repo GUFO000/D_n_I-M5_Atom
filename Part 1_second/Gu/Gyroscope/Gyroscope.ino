@@ -18,6 +18,7 @@ CRGB colors[] = {
 
 float accX, accY, accZ;
 float gyroX, gyroY, gyroZ;
+float ahrsX, ahrsY, ahrsZ;
 
 float temp;
 int time_blink = 300;
@@ -31,12 +32,20 @@ void loop() {
   M5.IMU.getTempData(&temp);
   M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
 
-  Serial.println(gyroX);
- Serial.println(gyroY);
-  Serial.println(gyroZ);
+  Serial.println("Coordinates");
+  //  Serial.println(gyroX);
+  // Serial.println(gyroY);
+  //  Serial.println(gyroZ);
 
 
-  
+  M5.IMU.getAhrsData(&ahrsX, &ahrsY, &ahrsZ);
+
+  Serial.println(ahrsX);
+  Serial.println(ahrsY);
+  Serial.println(ahrsZ);
+
+
+
   M5.update();
   delay(50);
 }
@@ -49,14 +58,14 @@ bool Delay(int num) {
   while (check_pressed != 1 && time_passed < num) {
     if (M5.Btn.wasPressed()) {
       check_pressed = 1;
-      
+
     }
     delay(10);
     time_passed = time_passed + 10;
-//    Serial.println("This is the time passed so far");
-//    Serial.println(time_passed);
-//    Serial.println("This is the check");
-//    Serial.println(check_pressed);
+    //    Serial.println("This is the time passed so far");
+    //    Serial.println(time_passed);
+    //    Serial.println("This is the check");
+    //    Serial.println(check_pressed);
     M5.update();
   }
   return check_pressed;
