@@ -54,7 +54,7 @@ void loop() {
     }
   }
 
-
+L
   Serial.println("This was the new X acc ");
   Serial.println(accZ);
   //Serial.println("This was the new Y position ");
