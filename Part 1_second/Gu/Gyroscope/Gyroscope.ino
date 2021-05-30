@@ -1,72 +1,72 @@
 #include "M5Atom.h"
 
-int oldX, oldY;
-bool Delay();
-
 void setup() {
   M5.begin(true, true, true);
   M5.IMU.Init();
-  //Serial.begin(115200);
-  Serial.println("Initializing M5Stack Atom Matrix");
 }
 
 CRGB colors[] = {
   0xfe0000, // red
   0x1ED35E, // green
-  0xff0000 // red
+  0xff0000 // white
 };
 
 float accX, accY, accZ;
 float gyroX, gyroY, gyroZ;
-float ahrsX, ahrsY, ahrsZ;
+float ahrsX_pitch, ahrsY_roll, ahrsZ_yaw;
 
 float temp;
 int time_blink = 300;
 int x, y, p;
 int count = 0;
-bool Blink = 0;
+int state_on_off  = 0;
+
+
+unsigned long timeSinceLastScreenRefresh;
+unsigned long timeBtwScreenRefresh = 200;
+
+unsigned long time_milli;
 
 void loop() {
 
+  time_milli = millis();
 
   M5.IMU.getTempData(&temp);
   M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
 
-  Serial.println("Coordinates");
+  //Serial.println("Coordinates");
   //  Serial.println(gyroX);
   // Serial.println(gyroY);
   //  Serial.println(gyroZ);
 
 
-  M5.IMU.getAhrsData(&ahrsX, &ahrsY, &ahrsZ);
-
-  Serial.println(ahrsX);
-  Serial.println(ahrsY);
-  Serial.println(ahrsZ);
-
-
-
-  M5.update();
-  delay(50);
-}
+  M5.IMU.getAhrsData(&ahrsX_pitch, &ahrsY_roll, &ahrsZ_yaw);
+  Serial.print("ahrsX: ");
+  Serial.print(ahrsX_pitch);
+  Serial.print(", ahrsY: ");
+  Serial.print(ahrsY_roll);
+  Serial.print(", ahrsZ: ");
+  Serial.println(ahrsZ_yaw);
 
 
-bool Delay(int num) {
-  bool check_pressed = 0;
-  int time_passed = 0;
 
-  while (check_pressed != 1 && time_passed < num) {
-    if (M5.Btn.wasPressed()) {
-      check_pressed = 1;
+  if (time_milli - timeBtwScreenRefresh > timeSinceLastScreenRefresh) {
+    if (state_on_off == 0) {
 
+      state_on_off = 1;
+      p=1;
+      for (x = 0; x < 5; x++) {
+        for (y = 0; y < 5; y++) {
+          M5.dis.drawpix(x, y, colors[p]);
+        }
+      }
     }
-    delay(10);
-    time_passed = time_passed + 10;
-    //    Serial.println("This is the time passed so far");
-    //    Serial.println(time_passed);
-    //    Serial.println("This is the check");
-    //    Serial.println(check_pressed);
+    else {
+      state_on_off  = 0;
+      M5.dis.clear();
+    }
+
     M5.update();
+    timeSinceLastScreenRefresh = time_milli;
   }
-  return check_pressed;
 }
