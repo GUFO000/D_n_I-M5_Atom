@@ -25,6 +25,7 @@ int Blink = 0;
 
 //threshold for inclining the matrix
 int thold = 17;
+float acc_thold = 1.1;
 
 unsigned long timeSinceLastScreenRefresh;
 unsigned long timeBtwScreenRefresh = 20;
@@ -47,17 +48,17 @@ void loop() {
     face_is_up  = true;
     face_is_down = false;
   }
-  
-  //Detect face down position 
+
+  //Detect face down position
   if (face_down()) {
     state_on_off = 2;
     face_is_down = true;
     face_is_up = false;
   }
 
-//  if (face_down()) {
-//    state_on_off = 0;
-//  }
+  //  if (face_down()) {
+  //    state_on_off = 0;
+  //  }
 
 
   switch (state_on_off) {
@@ -99,7 +100,6 @@ void loop() {
     Serial.println("Screen updated----------------");
   }
 
-
   if (time_milli - timeSinceLastChipRefresh > timeBtwChipRefresh) {
 
     M5.IMU.getTempData(&temp);
@@ -112,12 +112,19 @@ void loop() {
     // Serial.println(gyroY);
     // Serial.println(gyroZ);
 
-    Serial.print("ahrsX: ");
-    Serial.print(ahrsX_pitch);
-    Serial.print(", ahrsY: ");
-    Serial.print(ahrsY_roll);
-    Serial.print(", ahrsZ: ");
-    Serial.println(ahrsZ_yaw);
+    //    Serial.print("ahrsX: ");
+    //    Serial.print(ahrsX_pitch);
+    //    Serial.print(", ahrsY: ");
+    //    Serial.print(ahrsY_roll);
+    //    Serial.print(", ahrsZ: ");
+    //    Serial.println(ahrsZ_yaw);
+
+    Serial.print("accX: ");
+    Serial.print(accX);
+    Serial.print(", acccY: ");
+    Serial.print(accY);
+    Serial.print(", accZ: ");
+    Serial.println(accZ);
 
     timeSinceLastScreenRefresh = time_milli;
   }
@@ -139,18 +146,39 @@ bool face_down() {
 
 bool face_up() {
   bool test = false;
+  float magnitude_acc = 0;
 
   if (M5.Btn.wasPressed()) {
     test = true;
   }
   if ((abs(ahrsX_pitch) < thold) && (abs(ahrsY_roll) > (180 - thold))) {
     test = true;
+    Serial.println("triggered by ROTATING-----------------------------------------------------");
   }
+
+  magnitude_acc = sqrt(accX * accX + accY * accY + accZ * accZ);
+
+  Serial.print("The magnitude of the acceleration is: ");
+  Serial.print(magnitude_acc);
+  Serial.print(" acc_thold ");
+  Serial.print(acc_thold);
+
+  
+  
+  if (magnitude_acc > acc_thold) {
+    test = true;
+      Serial.println("triggered by ACCELERATION /////////////////////////////////////// ");
+  }
+
   if (test) {
     Serial.println("FACE UP DETECTED");
   }
   return test;
 }
+
+
+
+
 
 
 //    if (Blink  == 1) {
