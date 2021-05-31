@@ -10,7 +10,7 @@ void setup() {
 CRGB colors[] = {
   0xfe0000, // red
   0x1ED35E, // green
-  0xff0000 // white
+  0xFFFFFF // white
 };
 
 float accX, accY, accZ;
@@ -41,11 +41,14 @@ void loop() {
 
   time_milli = millis();
 
+  //Detect face up position
   if (face_up()) {
     state_on_off = 1;
     face_is_up  = true;
     face_is_down = false;
   }
+  
+  //Detect face down position 
   if (face_down()) {
     state_on_off = 2;
     face_is_down = true;
@@ -79,7 +82,6 @@ void loop() {
 
     //mode 2, one mode is selected
     case 2:
-      break;
       p = 1;
       for (x = 0; x < 5; x++) {
         for (y = 0; y < 5; y++) {
