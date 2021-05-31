@@ -66,6 +66,19 @@ void loop() {
       }
       break;
 
+
+    case 3:
+    // Set LEDs for blinking red
+      p = 1;
+      Blink  = 1;
+      for (x = 0; x < 5; x++) {
+        for (y = 0; y < 5; y++) {
+          M5.dis.drawpix(x, y, colors[p]);
+        }
+      }
+    break;
+
+    
     //count exceeded possible click options
     default:
       count = 0;
