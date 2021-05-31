@@ -7,8 +7,12 @@ void setup() {
   M5.begin(true, false, true);
   M5.IMU.Init();
   Serial.begin(115200);
+<<<<<<< Updated upstream
   oldX = -1;
   oldY = -1;
+=======
+
+>>>>>>> Stashed changes
   Serial.println("Initializing M5Stack Atom Matrix");
 }
 
@@ -135,9 +139,12 @@ void loop() {
     if (Delay(time_blink - 2)) {
       count++;
     }
+<<<<<<< Updated upstream
 
     //reset to false
     //Blink = 0;
+=======
+>>>>>>> Stashed changes
   }
   else {
     M5.dis.clear();
