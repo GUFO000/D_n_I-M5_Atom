@@ -35,6 +35,7 @@ void loop() {
   //checking for button being pressed
   if (M5.Btn.wasPressed()) {
     count++;
+    state_on_off  = 0;
     Serial.println("Button was pressed");
 
   }
@@ -64,7 +65,7 @@ void loop() {
 
     case 2:
       // red
-      p = 1;
+      p = 2;
       if (state_on_off == 1) {
         for (x = 0; x < 5; x++) {
           for (y = 0; y < 5; y++) {
@@ -92,15 +93,13 @@ void loop() {
           }
         }
         delay(1500); //we assume nothing is going on during a breaking, aka none is pressing anything
-
-        delay(2000); //we assume nothign is going on during a breaking, aka none is pressing anything
       }
       break;
 
     // Set LEDs for blinking green
     case 4:
       p = 0;
-     if (state_on_off == 1) {
+      if (state_on_off == 1) {
         for (x = 0; x < 5; x++) {
           for (y = 0; y < 5; y++) {
             M5.dis.drawpix(x, y, colors[p]);
@@ -115,7 +114,6 @@ void loop() {
           }
         }
         delay(1500);
-        delay(2000);
       }
       break;
 
@@ -140,7 +138,7 @@ void loop() {
     M5.update();
 
     timeSinceLastScreenRefresh = time_milli;
-    Serial.println(time_milli);
+    //Serial.println(time_milli);
     Serial.print("count: ");
     Serial.println(count);
   }
