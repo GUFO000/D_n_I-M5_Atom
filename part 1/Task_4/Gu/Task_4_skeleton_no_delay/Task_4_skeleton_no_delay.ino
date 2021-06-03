@@ -18,10 +18,6 @@ int time_blink = 300;
 int x, y, p;
 int count = 0;
 int state_on_off  = 0;
-<<<<<<< Updated upstream:Task_4/Gu/Task_4_skeleton_no_delay/Task_4_skeleton_no_delay.ino
-
-=======
->>>>>>> Stashed changes:part 1/Task_4/Gu/Task_4_skeleton_no_delay/Task_4_skeleton_no_delay.ino
 
 unsigned long timeSinceLastScreenRefresh;
 unsigned long timeBtwScreenRefresh = 200;
@@ -51,10 +47,6 @@ void loop() {
     // (i) all LEDs off
     case 0:
       M5.dis.clear();
-<<<<<<< Updated upstream:Task_4/Gu/Task_4_skeleton_no_delay/Task_4_skeleton_no_delay.ino
-
-=======
->>>>>>> Stashed changes:part 1/Task_4/Gu/Task_4_skeleton_no_delay/Task_4_skeleton_no_delay.ino
       state_on_off = 0;
       break;
 
@@ -85,10 +77,6 @@ void loop() {
     // Set LEDs for blinking red
     case 3:
       p = 1;
-<<<<<<< Updated upstream:Task_4/Gu/Task_4_skeleton_no_delay/Task_4_skeleton_no_delay.ino
-=======
-
->>>>>>> Stashed changes:part 1/Task_4/Gu/Task_4_skeleton_no_delay/Task_4_skeleton_no_delay.ino
       if (state_on_off == 1) {
         for (x = 0; x < 5; x++) {
           for (y = 0; y < 5; y++) {
@@ -103,22 +91,16 @@ void loop() {
             M5.dis.drawpix(x, y, colors[p]);
           }
         }
-<<<<<<< Updated upstream:Task_4/Gu/Task_4_skeleton_no_delay/Task_4_skeleton_no_delay.ino
         delay(1500); //we assume nothing is going on during a breaking, aka none is pressing anything
-=======
+
         delay(2000); //we assume nothign is going on during a breaking, aka none is pressing anything
->>>>>>> Stashed changes:part 1/Task_4/Gu/Task_4_skeleton_no_delay/Task_4_skeleton_no_delay.ino
       }
       break;
 
     // Set LEDs for blinking green
     case 4:
       p = 0;
-<<<<<<< Updated upstream:Task_4/Gu/Task_4_skeleton_no_delay/Task_4_skeleton_no_delay.ino
-=======
-
->>>>>>> Stashed changes:part 1/Task_4/Gu/Task_4_skeleton_no_delay/Task_4_skeleton_no_delay.ino
-      if (state_on_off == 1) {
+     if (state_on_off == 1) {
         for (x = 0; x < 5; x++) {
           for (y = 0; y < 5; y++) {
             M5.dis.drawpix(x, y, colors[p]);
@@ -132,11 +114,8 @@ void loop() {
             M5.dis.drawpix(x, y, colors[p]);
           }
         }
-<<<<<<< Updated upstream:Task_4/Gu/Task_4_skeleton_no_delay/Task_4_skeleton_no_delay.ino
         delay(1500);
-=======
         delay(2000);
->>>>>>> Stashed changes:part 1/Task_4/Gu/Task_4_skeleton_no_delay/Task_4_skeleton_no_delay.ino
       }
       break;
 
