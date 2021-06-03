@@ -25,13 +25,13 @@ int Blink = 0;
 
 //threshold for inclining the matrix
 int thold = 17;
-float acc_thold = 1.1;
+float acc_thold = 1.2;
 
 unsigned long timeSinceLastScreenRefresh;
-unsigned long timeBtwScreenRefresh = 20;
+unsigned long timeBtwScreenRefresh = 100;
 
 unsigned long timeSinceLastChipRefresh;
-unsigned long timeBtwChipRefresh = 10;
+unsigned long timeBtwChipRefresh = 100;
 
 unsigned long time_milli;
 
@@ -139,8 +139,6 @@ bool face_down() {
   if (test) {
     Serial.println("FACE dOWN DOWN DOWN DETECTED");
   }
-
-
   return test;
 }
 
@@ -155,15 +153,13 @@ bool face_up() {
     test = true;
     Serial.println("triggered by ROTATING-----------------------------------------------------");
   }
-
+  
   magnitude_acc = sqrt(accX * accX + accY * accY + accZ * accZ);
 
   Serial.print("The magnitude of the acceleration is: ");
   Serial.print(magnitude_acc);
   Serial.print(" acc_thold ");
   Serial.print(acc_thold);
-
-  
   
   if (magnitude_acc > acc_thold) {
     test = true;
