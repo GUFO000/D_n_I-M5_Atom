@@ -4,11 +4,6 @@ bool face_down();
 
 int check_mode_switch();
 
-void setup() {
-  M5.begin(true, true, true);
-  M5.IMU.Init();
-}
-
 CRGB colors[] = {
   0xfe0000, // red
   0x1ED35E, // green
@@ -51,12 +46,15 @@ unsigned long time_btw_btn_press = 350;
 
 
 
-
-
 //Variable to monitor if M5 is face up or down
 bool face_is_up  = true;
 bool face_is_down = false;
 
+void setup() {
+  M5.begin(true, true, true);
+  M5.IMU.Init();
+  Serial.println("initializiation happened");
+}
 
 void loop() {
 
@@ -242,7 +240,6 @@ bool face_up() {
 
 int check_mode_switch() {
   int mode_changed = 0;
-  float magnitude_acc = 0;
 
   Serial.print("The magnitude of the X acceleration is: ");
   Serial.println(accX);
