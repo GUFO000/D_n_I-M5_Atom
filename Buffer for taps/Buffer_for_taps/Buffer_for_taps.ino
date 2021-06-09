@@ -4,6 +4,11 @@ bool face_down();
 
 int check_mode_switch();
 
+void setup() {
+  M5.begin(true, true, true);
+  M5.IMU.Init();
+}
+
 CRGB colors[] = {
   0xfe0000, // red
   0x1ED35E, // green
@@ -44,17 +49,17 @@ unsigned long time_milli_press;
 unsigned long time_milli_last_press = 0;
 unsigned long time_btw_btn_press = 350;
 
-
-
 //Variable to monitor if M5 is face up or down
 bool face_is_up  = true;
 bool face_is_down = false;
 
-void setup() {
-  M5.begin(true, true, true);
-  M5.IMU.Init();
-  Serial.println("initializiation happened");
-}
+
+
+#define SAMPLE_COUNT 64
+#define BUFFER_SIZE SAMPLE_COUNT
+
+float bufferX[BUFFER_SIZE];
+int counter = 0;
 
 void loop() {
 
@@ -98,8 +103,8 @@ void loop() {
       active_mode = (active_mode + store_mode) % 5;
     }
 
-    Serial.print("Active mode ");
-    Serial.println(active_mode);
+//    Serial.print("Active mode ");
+//    Serial.println(active_mode);
 
     switch (active_mode) {
 
@@ -188,15 +193,10 @@ void loop() {
     M5.IMU.getTempData(&temp);
     M5.IMU.getAccelData(&accX, &accY, &accZ);
     M5.IMU.getAhrsData(&ahrsX_pitch, &ahrsY_roll, &ahrsZ_yaw);
-    //M5.IMU.getGyroData(&gyroX, &gyroY, &gyroZ);
-
-    //    Serial.print("accX: ");
-    //    Serial.print(accX);
-    //    Serial.print(", acccY: ");
-    //    Serial.print(accY);
-    //    Serial.print(", accZ: ");
-    //    Serial.println(accZ);
-
+    
+    bufferX[counter] = accX;
+    counter = (counter + 1)% BUFFER_SIZE;
+    
     timeSinceLastChipRefresh = time_milli;
   }
 }
@@ -240,6 +240,7 @@ bool face_up() {
 
 int check_mode_switch() {
   int mode_changed = 0;
+  float magnitude_acc = 0;
 
   Serial.print("The magnitude of the X acceleration is: ");
   Serial.println(accX);
