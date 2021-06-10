@@ -6,6 +6,15 @@
 int n, mat;
 char string_temp[10];
 
+bool flag = false;
+int counter_graph  = 0;
+int array_pos = 0;
+int counter = 0;
+
+float array_temp[5];
+float temp_60_average = 0;
+
+
 int zero[25] = {
   0, 1, 1, 1, 0,
   0, 1, 0, 1, 0,
@@ -122,8 +131,8 @@ CRGB colors[] = {
   0x137a10, //green
   0xc76316, // orange
   0xc71616, //red
-  
-  
+
+
 };
 
 
@@ -276,6 +285,12 @@ void loop() {
       //Show graph of temperature across a predefined range
       case 3:
         DisplayColor(tre, 1);
+        for (int i = 0; i < 5; i++) {
+          array_temp[i] = temp_average;
+        }
+        counter  = 0;
+        array_pos = 0;
+        temp_60_average = 0;
         break;
 
       //Change units
@@ -343,26 +358,60 @@ void loop() {
         M5.dis.drawpix(3, 4, colors[6] );
         M5.dis.drawpix(4, 4, colors[7] );
 
-        if (temp > 40){mat  = 7;}
-        else if (temp > 35){mat  = 6;}
-        else if (temp > 30){mat  = 5;}
-        else if (temp > 25){mat  = 4;}
-        else if (temp > 20){mat  = 3;}
-        
+        if (temp > 40) {
+          mat  = 7;
+        }
+        else if (temp > 35) {
+          mat  = 6;
+        }
+        else if (temp > 30) {
+          mat  = 5;
+        }
+        else if (temp > 25) {
+          mat  = 4;
+        }
+        else if (temp > 20) {
+          mat  = 3;
+        }
+
         for (x = 0; x < 5; x++) {
           for (y = 0; y < 3; y++) {
             M5.dis.drawpix(x, y, colors[mat]);
           }
         }
-
         break;
+
+
       case 3:
-
-        
-        DisplayColor(tre, 2);
+        flag = true;
+        M5.dis.clear();
+        for (int i = 0; i < 5; i++) {
+          Serial.print(i);
+          Serial.print(" ");
+          Serial.println(array_temp[i]);
+        }
+        for (int i = 0; i < 5; i++) {
+          if (array_temp[i] > 45) {
+            M5.dis.drawpix(i, 0, colors[7]);
+          }
+          else if (array_temp[i] > 40) {
+            M5.dis.drawpix(i, 1, colors[6]);
+          }
+          else if (array_temp[i] > 35) {
+            M5.dis.drawpix(i, 2, colors[5]);
+          }
+          else if (array_temp[i] > 30) {
+            M5.dis.drawpix(i, 3, colors[4]);
+          }
+          else { /*if(array_temp[i]> 25)*/
+            M5.dis.drawpix(i, 4, colors[3]);
+          }
+        }
         break;
+
+
       case 4:
-        tempf = (temp * (9/5))+32;
+        tempf = (temp * (9 / 5)) + 32;
         dtostrf(tempf, 5, 2, string_temp);
         Serial.println(tempf);
         if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
@@ -388,9 +437,26 @@ void loop() {
   if (time_milli - timeSinceLastChipRefresh > timeBtwChipRefresh) {
 
     M5.IMU.getTempData(&temp);
-    Serial.print("Updating stuff_______-_-_-_-_-_-_");
-    Serial.println(temp);
     update_temp_average();
+
+    if (flag) {
+      Serial.print("Counter  ");
+      Serial.print(counter);
+      Serial.print(" array pos  ");
+      Serial.println(array_pos);
+      if (counter == 500){
+        array_temp[array_pos]  = temp_60_average/500;
+        temp_60_average = 0;
+        array_pos = (array_pos + 1)%5;
+        counter = 0;
+      }
+      else {
+        temp_60_average = temp_60_average + temp;
+        Serial.print(" temp_60_average  ");
+        Serial.println(temp_60_average);
+        counter++;
+      }
+    }
 
     M5.IMU.getAccelData(&accX, &accY, &accZ);
     M5.IMU.getAhrsData(&ahrsX_pitch, &ahrsY_roll, &ahrsZ_yaw);
