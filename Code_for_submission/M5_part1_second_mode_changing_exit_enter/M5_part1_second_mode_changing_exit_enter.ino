@@ -1,7 +1,4 @@
 #include "M5Atom.h"
-//#include <FastLED.h>
-//#define NUM_LEDS 25
-//#define DATA_PIN 27
 
 int n, mat;
 char string_temp[10];
@@ -96,7 +93,7 @@ int nine[25] = {
 };
 int letter_c[25] = {
   0, 1, 1, 1, 0,
-  1, 1, 0, 0, 0,
+  1, 0, 0, 0, 0,
   1, 0, 0, 0, 0,
   1, 0, 0, 0, 0,
   0, 1, 1, 1, 0
@@ -131,8 +128,6 @@ CRGB colors[] = {
   0x137a10, //green
   0xc76316, // orange
   0xc71616, //red
-
-
 };
 
 
@@ -153,8 +148,6 @@ int active_mode = 0;
 
 //int to store result of checking if mode was changed (funtion does not run twice)
 int store_mode =  0;
-//int state_on_off  = 0;
-int Blink = 0;
 
 //threshold for inclining the matrix
 int thold = 17; //degrees
@@ -178,12 +171,6 @@ unsigned long time_btw_btn_press = 350;
 bool face_is_up  = true;
 bool face_is_down = false;
 
-//#define NUM_LEDS 25
-//#define DATA_PIN 27
-//
-//int n;
-//CRGB leds[NUM_LEDS];
-
 unsigned long timeSinceLastDigitOnScreen;
 unsigned long timeBtwDigitsOnScreen = 100;
 
@@ -193,7 +180,6 @@ unsigned long time_milli_lastButtonPress = 0;
 
 unsigned long time_btw_digitUpdate_mode0 = 600;
 unsigned long time_last_digitUpdate_mode0 = 0;
-
 
 
 bool MODE_DETECTING = false;
@@ -207,9 +193,6 @@ float temp_number_entries = 0;
 void setup() {
   M5.begin(true, false, true);
   M5.IMU.Init();
-
-  //  FastLED.addLeds<WS2812, DATA_PIN, GRB>(leds, NUM_LEDS);
-  //  FastLED.setBrightness(20);
 }
 
 //-----------------------------------------------------------------
@@ -569,37 +552,37 @@ void update_temp_average() {
 
 void print_digit(char digit) {
   if (digit == '0') {
-    DisplayColor(zero, 1);
+    DisplayColor(zero, 2);
   }
   else if (digit == '1') {
-    DisplayColor(one, 1);
+    DisplayColor(one, 2);
   }
   else if (digit == '2') {
-    DisplayColor(two, 1);
+    DisplayColor(two, 2);
   }
   else if (digit == '3') {
-    DisplayColor(tre, 1);
+    DisplayColor(tre, 2);
   }
   else if (digit == '4') {
-    DisplayColor(four, 1);
+    DisplayColor(four, 2);
   }
   else if (digit == '5') {
-    DisplayColor(five, 1);
+    DisplayColor(five, 2);
   }
   else if (digit == '6') {
-    DisplayColor(six, 1);
+    DisplayColor(six, 2);
   }
   else if (digit == '7') {
-    DisplayColor(seven, 1);
+    DisplayColor(seven, 2);
   }
   else if (digit == '8') {
-    DisplayColor(eight, 1);
+    DisplayColor(eight, 2);
   }
   else if (digit == '9') {
-    DisplayColor(nine, 1);
+    DisplayColor(nine, 2);
   }
   else if (digit == '.') {
     M5.dis.clear();
-    M5.dis.drawpix(22, colors[1] );
+    M5.dis.drawpix(22, colors[2] );
   }
 }
