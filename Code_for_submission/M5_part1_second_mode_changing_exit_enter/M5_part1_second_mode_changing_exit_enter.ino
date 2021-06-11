@@ -126,7 +126,7 @@ CRGB colors[] = {
   0x031cfc, // blue
   0x2090f7, //light blue
   0x137a10, //green
-  0xFFFF00, // orange
+  0xc76316, // orange
   0xc71616, //red
 };
 
@@ -308,7 +308,7 @@ void loop() {
           Serial.println(string_temp);
           if (n == strlen(string_temp)) {
             n = 0;
-            DisplayColor(letter_c, 2);
+            DisplayColor(letter_c, 1);
           }
           else {
             print_digit(string_temp[n]);
@@ -324,7 +324,7 @@ void loop() {
 
           if (n == strlen(string_temp)) {
             n = 0;
-            DisplayColor(letter_c, 2);
+            DisplayColor(letter_c, 1);
           }
           else {
             print_digit(string_temp[n]);
@@ -400,7 +400,7 @@ void loop() {
         if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
           if (n == strlen(string_temp)) {
             n = 0;
-            DisplayColor(letter_f, 2);
+            DisplayColor(letter_f, 1);
           }
           else {
             print_digit(string_temp[n]);
