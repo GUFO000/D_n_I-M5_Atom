@@ -53,7 +53,7 @@ void loop() {
 
     // (ii) Manual Rear strobe (RED): LEDs strobe at a predetermined interval
     case 1:
-      p = 0;
+      p = 1;
       if (state_on_off == 1) {
         for (x = 0; x < 5; x++) {
           for (y = 0; y < 5; y++) {
@@ -98,7 +98,7 @@ void loop() {
 
     // Set LEDs for blinking green
     case 4:
-      p = 0;
+      p = 2;
       if (state_on_off == 1) {
         for (x = 0; x < 5; x++) {
           for (y = 0; y < 5; y++) {
@@ -107,7 +107,7 @@ void loop() {
         }
       }
       if ((accZ > 1 || accZ < -1) && (state_on_off == 1)) {
-        p = 0;
+        p = 2;
         for (x = 0; x < 5; x++) {
           for (y = 0; y < 5; y++) {
             M5.dis.drawpix(x, y, colors[p]);
