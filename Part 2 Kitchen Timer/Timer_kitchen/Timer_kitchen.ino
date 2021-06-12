@@ -20,6 +20,7 @@ int one[25] = {
   0, 1, 1, 1, 0
 };
 
+
 int two[25] = {
   0, 1, 1, 1, 0,
   0, 0, 0, 1, 0,
@@ -122,6 +123,10 @@ bool set_timer();
 void DisplayColor(int number[], int fillColor);
 void print_digit(char digit);
 void set_timer1(unsigned long &initial_t);
+void DisplayInvertedColor(int number[], int fillColor); 
+void print_inverted_digit(char digit);
+
+
 
 //Few colors available
 CRGB colors[] = {
@@ -314,7 +319,7 @@ void loop() {
       dtostrf(time_left1, 4, 0, time_to_print);
       if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
 
-        Serial.print("---------string tp");
+        Serial.print("--1----string tp");
         Serial.println(time_to_print);
 
         if (n == strlen(time_to_print)) {
@@ -331,12 +336,12 @@ void loop() {
     }
 
     if (face_timer2) {
-
+      
       dtostrf(time_left2, 4, 0, time_to_print);
 
       if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
-
-        Serial.print("---------string tp");
+   
+        Serial.print("----2---string tp");
         Serial.println(time_to_print);
         
         if (n == strlen(time_to_print)) {
@@ -344,7 +349,7 @@ void loop() {
           M5.dis.clear();
         }
         else {
-          print_digit(time_to_print[n]);
+          print_inverted_digit(time_to_print[n]);
           n++;
         }
         time_last_digitUpdate_mode0 = time_milli;
@@ -521,6 +526,49 @@ void DisplayColor(int number[], int fillColor) {
   }
 }
 
+void DisplayInvertedColor(int number[], int fillColor) {
+  M5.dis.clear();
+  for (int i = 0; i <25; i++)
+  {
+    if (number[24-i] == 1) {
+      M5.dis.drawpix(i, colors[fillColor]);
+    }
+  }
+}
+
+void print_inverted_digit(char digit) {
+  if (digit == '0') {
+    DisplayInvertedColor(zero, 1);
+  }
+  else if (digit == '1') {
+    DisplayInvertedColor(one, 1);
+  }
+  else if (digit == '2') {
+    DisplayInvertedColor(two, 1);
+  }
+  else if (digit == '3') {
+    DisplayInvertedColor(tre, 1);
+  }
+  else if (digit == '4') {
+    DisplayInvertedColor(four, 1);
+  }
+  else if (digit == '5') {
+    DisplayInvertedColor(five, 1);
+  }
+  else if (digit == '6') {
+    DisplayInvertedColor(six, 1);
+  }
+  else if (digit == '7') {
+    DisplayInvertedColor(seven, 1);
+  }
+  else if (digit == '8') {
+    DisplayInvertedColor(eight, 1);
+  }
+  else if (digit == '9') {
+    DisplayInvertedColor(nine, 1);
+  }
+}
+
 void print_digit(char digit) {
   if (digit == '0') {
     DisplayColor(zero, 1);
@@ -551,9 +599,5 @@ void print_digit(char digit) {
   }
   else if (digit == '9') {
     DisplayColor(nine, 1);
-  }
-  else if (digit == '.') {
-    M5.dis.clear();
-    M5.dis.drawpix(22, colors[1] );
   }
 }
