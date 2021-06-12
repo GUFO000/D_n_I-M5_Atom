@@ -1,5 +1,5 @@
 #Part 1 Bike Light (Brake detection)
-**Guglielmo Fonda, Aya El Mir, Aliha, Milos**
+**Group 19: Guglielmo Fonda, Aya El Mir, Aliha, Milos**
 
 This repositary contains the solution to the challenge proposed in the course from the NYU Abu Dhabi University: ENGR-UH 1021J Design & Innovation Summer 2021 by Instructor Matthew Karau.
 
