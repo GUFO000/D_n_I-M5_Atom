@@ -318,7 +318,7 @@ void loop() {
       dtostrf(time_left1, 4, 0, time_to_print);
       if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
 
-        Serial.print("--1----string tp");
+        Serial.print("Time remaining for timer 1:");
         Serial.println(time_to_print);
 
         if (n == strlen(time_to_print)) {
@@ -340,7 +340,7 @@ void loop() {
 
       if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
    
-        Serial.print("----2---string tp");
+        Serial.print("Time remaining for timer 2: ");
         Serial.println(time_to_print);
         
         if (n == strlen(time_to_print)) {
@@ -371,7 +371,7 @@ void loop() {
       if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
 
         if (blinking == 0) {
-          Serial.println("Blinking 1 timer 1");
+          //Serial.println("Blinking 1 timer 1");
 
           for (int i = 0; i < 25; i++) {
             M5.dis.drawpix(i, colors[1]);
@@ -379,7 +379,7 @@ void loop() {
           blinking = 1 ;
         }
         else {
-          Serial.println("Blinking 2 tim 1");
+          //Serial.println("Blinking 2 tim 1");
 
           DisplayColor(one, 2);
           blinking = 0;
@@ -401,7 +401,7 @@ void loop() {
 
         if (blinking == 0) {
           
-          Serial.println("Blinking 1 tim 1");
+          //Serial.println("Blinking 1 tim 1");
           M5.dis.clear();
           for (int i = 0; i < 25; i++) {
             M5.dis.drawpix(i, colors[2]);
@@ -409,7 +409,7 @@ void loop() {
           blinking = 1 ;
         }
         else {
-          Serial.println("Blinking 2 tim 2");
+          //Serial.println("Blinking 2 tim 2");
           DisplayColor(two, 2);
           blinking = 0;
         }
@@ -417,7 +417,6 @@ void loop() {
       }
     }
     if (shaken()) {
-      Serial.println("Shaken devide detected and entered the functio");
       TIME_BLINKING = false;
       TIME_SETTING = true;
     }
