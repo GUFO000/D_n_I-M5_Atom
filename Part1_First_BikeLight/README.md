@@ -1,5 +1,5 @@
-#Part 1 Bike Light (Brake detection)
-**Group 19: Guglielmo Fonda, Aya El Mir, Aliha Anshira, Milos Vojinović**
+# Part 1 Bike Light (Brake detection)
+** Group 19: Guglielmo Fonda, Aya El Mir, Aliha Anshira, Milos Vojinović **
 
 Demontration video of Part1 Bike Light available on [Youtube here] (https://youtu.be/vMqqhKJLAGE)
 
