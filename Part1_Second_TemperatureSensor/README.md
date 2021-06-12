@@ -8,11 +8,15 @@ The only library used was the M5 Atom Library and the guide for installation can
 
 1.The solution uses the M5 Atom device proposes the following modes :
 
-a.Show Active temperature + Units
-b.Show average of last 24 hours of temperature + Units
-c.Show color scale of temperature range + current temperature as color
+a.Show Active temperature + Units.
+
+b.Show average of last 24 hours of temperature + Units.
+
+c.Show color scale of temperature range + current temperature as color.
+
 d.Show graph of temperature across a predefined range.
-e.Change units
+
+e.Change units.
 
 
 2.User guide for switching between the modes:
