@@ -236,14 +236,14 @@ void loop() {
       TIME_SHOWING = true;
       TIME_SETTING = false;
       TIME_BLINKING = false;
-      Serial.println(" Time showing true");
+      //Serial.println(" Time showing true");
 
     }
     else {
       TIME_SHOWING = false;
       TIME_SETTING = true;
       TIME_BLINKING = false;
-      Serial.println(" Time setting true");
+      //Serial.println(" Time setting true");
     }
   }
 
@@ -488,7 +488,7 @@ void set_timer1(unsigned long & initial_t) {
 
 void set_timer2(unsigned long &initial_t) {
   initial_t = time_milli;
-  timer1_set = true;
+  timer2_set = true;
 }
 
 bool set_timer() {
