@@ -128,7 +128,7 @@ bool set_timer();
 void DisplayColor(int number[], int fillColor);
 void print_digit(char digit);
 void set_timer1(unsigned long &initial_t);
-void DisplayInvertedColor(int number[], int fillColor); 
+void DisplayInvertedColor(int number[], int fillColor);
 void print_inverted_digit(char digit);
 
 
@@ -190,6 +190,9 @@ unsigned long initial_time2 = 0;
 
 unsigned long len_timer1 = 20000; //120 000 is an exemple = start of the program
 unsigned long len_timer2 = 10000;
+
+unsigned long web_len_timer1 = 20000; //120 000 is an exemple = start of the program
+unsigned long web_len_timer2 = 10000;
 
 int time_left1 = 1;
 int time_left2 = 1;
@@ -303,76 +306,77 @@ void loop() {
       if (set_timer()) {
         //iam using this variable to decrement, is it correct?
         len_timer1 = time_to_be_set * 60000;
+        web_len_timer1 = time_to_be_set * 60;
         set_timer1(initial_time1) ;
         time_to_be_set = 0;
 
-     //Creataes a webpage for timer 1. The webpage to go to is http://192.168.4.1/T1
-    if (client) {                             // if you get a client,
-    Serial.println("New Client.");           // print a message out the serial port
-    String currentLine = "";                // make a String to hold incoming data from the client
-    while (client.connected()) {            // loop while the client's connected
-      if (client.available()) {             // if there's bytes to read from the client,
-        char c = client.read();             // read a byte, then
-        //Serial.write(c);                    // print it out the serial monitor
-        if (c == '\n') {                    // if the byte is a newline character
+        //Creataes a webpage for timer 1. The webpage to go to is http://192.168.4.1/T1
+        if (client) {                             // if you get a client,
+          Serial.println("New Client.");           // print a message out the serial port
+          String currentLine = "";                // make a String to hold incoming data from the client
+          while (client.connected()) {            // loop while the client's connected
+            if (client.available()) {             // if there's bytes to read from the client,
+              char c = client.read();             // read a byte, then
+              //Serial.write(c);                    // print it out the serial monitor
+              if (c == '\n') {                    // if the byte is a newline character
 
-          // if the current line is blank, you got two newline characters in a row.
-          // that's the end of the client HTTP request, so send a response:
-          if (currentLine.length() == 0) {
-            // break out of the while loop:
-            break;
-          } else {    // if you got a newline, then clear currentLine:
-            currentLine = "";
+                // if the current line is blank, you got two newline characters in a row.
+                // that's the end of the client HTTP request, so send a response:
+                if (currentLine.length() == 0) {
+                  // break out of the while loop:
+                  break;
+                } else {    // if you got a newline, then clear currentLine:
+                  currentLine = "";
+                }
+              } else if (c != '\r') {  // if you got anything else but a carriage return character,
+                currentLine += c;      // add it to the end of the currentLine
+              }
+
+              //  If the user selects for timer 1, it should take them to this page.
+              if (currentLine.endsWith("GET /T1")) {
+
+
+                client.println("<!DOCTYPE HTML>");
+                client.println("<html>");
+                client.println("<head>");
+                client.println("<script type=\"text/javascript\">");
+                client.println("window.onload = function() {");
+                client.println("httpGetAsync(\"/value1\");");
+                client.println("function httpGetAsync(theUrl) { ");
+                client.println("var xmlHttp = new XMLHttpRequest();");
+                client.println("var frequency_val = 1000;");
+                client.println("xmlHttp.onreadystatechange = function() { ");
+                client.println("if (xmlHttp.readyState == 4 && xmlHttp.status == 200)");
+                client.println("document.getElementById(\"val\").innerHTML = xmlHttp.responseText; }");
+                client.println("xmlHttp.open(\"GET\", theUrl, true); ");
+                client.println("xmlHttp.send(null)");
+                client.println("setTimeout(function(){httpGetAsync(\"/value1\")}, frequency_val); } }");
+                client.println("</script>");
+                client.println("</head>");
+                client.println("<body>");
+                client.print("<p style=\"font-size: 70px; font-style: arial; display: center; text-align:center; color:black\">TIMER 1</p> <br>");
+                client.println("<h2 style=\"font-size: 64px; font-style: arial; display: center; text-align: center; color: gray\"> Time Left: </h2> ");
+                client.println("<h2 id=\"val\" style=\"font-size: 64px; display: center; text-align : center; color:maroon\"> </h2> <br>");
+                client.println("</body>");
+                client.println("</html>");
+              }
+
+
+              if (currentLine.endsWith("GET /value1")) {
+
+                len_timer1--;
+
+              }
+
+            }
           }
-        } else if (c != '\r') {  // if you got anything else but a carriage return character,
-          currentLine += c;      // add it to the end of the currentLine
+          // close the connection:
+          client.stop();
+          Serial.println("Client Disconnected.");
         }
-
-        //  If the user selects for timer 1, it should take them to this page.
-        if (currentLine.endsWith("GET /T1")) {
-
-          
-          client.println("<!DOCTYPE HTML>");
-          client.println("<html>");
-          client.println("<head>");
-          client.println("<script type=\"text/javascript\">");
-          client.println("window.onload = function() {");
-          client.println("httpGetAsync(\"/value1\");");
-          client.println("function httpGetAsync(theUrl) { ");
-          client.println("var xmlHttp = new XMLHttpRequest();");
-          client.println("var frequency_val = 1000;");
-          client.println("xmlHttp.onreadystatechange = function() { ");
-          client.println("if (xmlHttp.readyState == 4 && xmlHttp.status == 200)");
-          client.println("document.getElementById(\"val\").innerHTML = xmlHttp.responseText; }");
-          client.println("xmlHttp.open(\"GET\", theUrl, true); ");
-          client.println("xmlHttp.send(null)");
-          client.println("setTimeout(function(){httpGetAsync(\"/value1\")}, frequency_val); } }");
-          client.println("</script>");
-          client.println("</head>");
-          client.println("<body>");
-          client.print("<p style=\"font-size: 70px; font-style: arial; display: center; text-align:center; color:black\">TIMER 1</p> <br>");
-          client.println("<h2 style=\"font-size: 64px; font-style: arial; display: center; text-align: center; color: gray\"> Time Left: </h2> ");
-          client.println("<h2 id=\"val\" style=\"font-size: 64px; display: center; text-align : center; color:maroon\"> </h2> <br>");
-          client.println("</body>");
-          client.println("</html>");
-        }
-
-
-        if (currentLine.endsWith("GET /value1")) {
-         
-          len_timer1--;
-          
-        }
-        
       }
     }
-    // close the connection:
-    client.stop();
-    Serial.println("Client Disconnected.");
-  }
-}
-      }
-    
+
 
     if (face_timer2) {
 
@@ -381,208 +385,210 @@ void loop() {
 
       if (set_timer()) {
         len_timer2 = time_to_be_set * 60000;
+        web_len_timer2 = time_to_be_set * 60;
+
         set_timer2(initial_time2) ;
         time_to_be_set = 0;
         if (client) {                             // if you get a client,
-    Serial.println("New Client.");           // print a message out the serial port
-    String currentLine = "";                // make a String to hold incoming data from the client
-    while (client.connected()) {            // loop while the client's connected
-      if (client.available()) {             // if there's bytes to read from the client,
-        char c = client.read();             // read a byte, then
-        //Serial.write(c);                    // print it out the serial monitor
-        if (c == '\n') {                    // if the byte is a newline character
+          Serial.println("New Client.");           // print a message out the serial port
+          String currentLine = "";                // make a String to hold incoming data from the client
+          while (client.connected()) {            // loop while the client's connected
+            if (client.available()) {             // if there's bytes to read from the client,
+              char c = client.read();             // read a byte, then
+              //Serial.write(c);                    // print it out the serial monitor
+              if (c == '\n') {                    // if the byte is a newline character
 
-          // if the current line is blank, you got two newline characters in a row.
-          // that's the end of the client HTTP request, so send a response:
-          if (currentLine.length() == 0) {
-            // break out of the while loop:
-            break;
-          } else {    // if you got a newline, then clear currentLine:
-            currentLine = "";
+                // if the current line is blank, you got two newline characters in a row.
+                // that's the end of the client HTTP request, so send a response:
+                if (currentLine.length() == 0) {
+                  // break out of the while loop:
+                  break;
+                } else {    // if you got a newline, then clear currentLine:
+                  currentLine = "";
+                }
+              } else if (c != '\r') {  // if you got anything else but a carriage return character,
+                currentLine += c;      // add it to the end of the currentLine
+              }
+
+              //Creataes a webpage for timer 1. The webpage to go to is http://192.168.4.1/T2
+              if (currentLine.endsWith("GET /T2")) {
+
+
+                client.println("<!DOCTYPE HTML>");
+                client.println("<html>");
+                client.println("<head>");
+                client.println("<script type=\"text/javascript\">");
+                client.println("window.onload = function() {");
+                client.println("httpGetAsync(\"/value2\");");
+                client.println("function httpGetAsync(theUrl2) { ");
+                client.println("var xmlHttp2 = new XMLHttpRequest();");
+                client.println("var frequency_val = 1000;");
+                client.println("xmlHttp2.onreadystatechange = function() { ");
+                client.println("if (xmlHttp2.readyState == 4 && xmlHttp2.status == 200)");
+                client.println("document.getElementById(\"val\").innerHTML = xmlHttp2.responseText; }");
+                client.println("xmlHttp2.open(\"GET\", theUrl2, true); ");
+                client.println("xmlHttp2.send(null)");
+                client.println("setTimeout(function(){httpGetAsync(\"/value2\")}, frequency_val); } }");
+                client.println("</script>");
+                client.println("</head>");
+                client.println("<body>");
+                client.print("<p style=\"font-size: 70px; font-style: arial; display: center; text-align:center; color:black\">TIMER 2</p> <br>");
+                client.println("<h2 style=\"font-size: 64px; font-style: arial; display: center; text-align: center; color: gray\"> Time Left: </h2> ");
+                client.println("<h2 id=\"val\" style=\"font-size: 64px; display: center; text-align : center; color:maroon\"> </h2> <br>");
+                client.println("</body>");
+                client.println("</html>");
+              }
+
+
+              if (currentLine.endsWith("GET /value2")) {
+
+                len_timer2--;
+
+              }
+
+            }
           }
-        } else if (c != '\r') {  // if you got anything else but a carriage return character,
-          currentLine += c;      // add it to the end of the currentLine
+          // close the connection:
+          client.stop();
+          Serial.println("Client Disconnected.");
         }
-
-        //Creataes a webpage for timer 1. The webpage to go to is http://192.168.4.1/T2
-        if (currentLine.endsWith("GET /T2")) {
-
-          
-          client.println("<!DOCTYPE HTML>");
-          client.println("<html>");
-          client.println("<head>");
-          client.println("<script type=\"text/javascript\">");
-          client.println("window.onload = function() {");
-          client.println("httpGetAsync(\"/value2\");");
-          client.println("function httpGetAsync(theUrl2) { ");
-          client.println("var xmlHttp2 = new XMLHttpRequest();");
-          client.println("var frequency_val = 1000;");
-          client.println("xmlHttp2.onreadystatechange = function() { ");
-          client.println("if (xmlHttp2.readyState == 4 && xmlHttp2.status == 200)");
-          client.println("document.getElementById(\"val\").innerHTML = xmlHttp2.responseText; }");
-          client.println("xmlHttp2.open(\"GET\", theUrl2, true); ");
-          client.println("xmlHttp2.send(null)");
-          client.println("setTimeout(function(){httpGetAsync(\"/value2\")}, frequency_val); } }");
-          client.println("</script>");
-          client.println("</head>");
-          client.println("<body>");
-          client.print("<p style=\"font-size: 70px; font-style: arial; display: center; text-align:center; color:black\">TIMER 2</p> <br>");
-          client.println("<h2 style=\"font-size: 64px; font-style: arial; display: center; text-align: center; color: gray\"> Time Left: </h2> ");
-          client.println("<h2 id=\"val\" style=\"font-size: 64px; display: center; text-align : center; color:maroon\"> </h2> <br>");
-          client.println("</body>");
-          client.println("</html>");
-        }
-
-
-        if (currentLine.endsWith("GET /value2")) {
-         
-          len_timer2--;
-          
-        }
-        
-      }
-    }
-    // close the connection:
-    client.stop();
-    Serial.println("Client Disconnected.");
-  }
-}
-      }
-       
-    
-  
-
-  //-----------------------------------------
-
-  if (TIME_SHOWING) {
-
-    if (face_timer1) {
-      //      Serial.print(" len_timer1 ");
-      //      Serial.print(len_timer1);
-      //      Serial.print(" inti time ");
-      //      Serial.print(initial_time1);
-      //      Serial.print(" Time milli ");
-      //      Serial.print(time_milli);
-      //      Serial.print(" Time left prima ");
-      //      Serial.print(time_left);
-
-
-      dtostrf(time_left1, 4, 0, time_to_print);
-      if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
-
-        Serial.print("--1----string tp");
-        Serial.println(time_to_print);
-
-        if (n == strlen(time_to_print)) {
-          n = 0;
-          M5.dis.clear();
-          //DisplayColor(letter_c, 1);
-        }
-        else {
-          print_digit(time_to_print[n]);
-          n++;
-        }
-        time_last_digitUpdate_mode0 = time_milli;
       }
     }
 
-    if (face_timer2) {
-      
-      dtostrf(time_left2, 4, 0, time_to_print);
 
-      if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
-   
-        Serial.print("----2---string tp");
-        Serial.println(time_to_print);
-        
-        if (n == strlen(time_to_print)) {
-          n = 0;
-          M5.dis.clear();
-        }
-        else {
-          print_inverted_digit(time_to_print[n]);
-          n++;
-        }
-        time_last_digitUpdate_mode0 = time_milli;
-      }
 
-    }
-  }
 
-  //----------------------------------------------
+    //-----------------------------------------
 
-  if (TIME_BLINKING) {
-    if (face_timer1) {
+    if (TIME_SHOWING) {
 
-      timer1_set = false;
-      time_left1 = 1;
+      if (face_timer1) {
+        //      Serial.print(" len_timer1 ");
+        //      Serial.print(len_timer1);
+        //      Serial.print(" inti time ");
+        //      Serial.print(initial_time1);
+        //      Serial.print(" Time milli ");
+        //      Serial.print(time_milli);
+        //      Serial.print(" Time left prima ");
+        //      Serial.print(time_left);
 
-      TIME_SHOWING = false;
-      TIME_SETTING = false;
 
-      if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
+        dtostrf(time_left1, 4, 0, time_to_print);
+        if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
 
-        if (blinking == 0) {
-          Serial.println("Blinking 1 timer 1");
+          Serial.print("--1----string tp");
+          Serial.println(time_to_print);
 
-          for (int i = 0; i < 25; i++) {
-            M5.dis.drawpix(i, colors[1]);
+          if (n == strlen(time_to_print)) {
+            n = 0;
+            M5.dis.clear();
+            //DisplayColor(letter_c, 1);
           }
-          blinking = 1 ;
-        }
-        else {
-          Serial.println("Blinking 2 tim 1");
-
-          DisplayColor(one, 2);
-          blinking = 0;
-        }
-        time_last_digitUpdate_mode0 = time_milli;
-      }
-    }
-
-    if (face_timer2) {
-
-      timer2_set = false;
-      time_left2 = 1;
-
-
-      TIME_SHOWING = false;
-      TIME_SETTING = false;
-
-      if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
-
-        if (blinking == 0) {
-          
-          Serial.println("Blinking 1 tim 1");
-          M5.dis.clear();
-          for (int i = 0; i < 25; i++) {
-            M5.dis.drawpix(i, colors[2]);
+          else {
+            print_digit(time_to_print[n]);
+            n++;
           }
-          blinking = 1 ;
+          time_last_digitUpdate_mode0 = time_milli;
         }
-        else {
-          Serial.println("Blinking 2 tim 2");
-          DisplayColor(two, 2);
-          blinking = 0;
+      }
+
+      if (face_timer2) {
+
+        dtostrf(time_left2, 4, 0, time_to_print);
+
+        if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
+
+          Serial.print("----2---string tp");
+          Serial.println(time_to_print);
+
+          if (n == strlen(time_to_print)) {
+            n = 0;
+            M5.dis.clear();
+          }
+          else {
+            print_inverted_digit(time_to_print[n]);
+            n++;
+          }
+          time_last_digitUpdate_mode0 = time_milli;
         }
-        time_last_digitUpdate_mode0 = time_milli;
+
       }
     }
-    if (shaken()) {
-      Serial.println("Shaken devide detected and entered the functio");
-      TIME_BLINKING = false;
-      TIME_SETTING = true;
+
+    //----------------------------------------------
+
+    if (TIME_BLINKING) {
+      if (face_timer1) {
+
+        timer1_set = false;
+        time_left1 = 1;
+
+        TIME_SHOWING = false;
+        TIME_SETTING = false;
+
+        if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
+
+          if (blinking == 0) {
+            Serial.println("Blinking 1 timer 1");
+
+            for (int i = 0; i < 25; i++) {
+              M5.dis.drawpix(i, colors[1]);
+            }
+            blinking = 1 ;
+          }
+          else {
+            Serial.println("Blinking 2 tim 1");
+
+            DisplayColor(one, 2);
+            blinking = 0;
+          }
+          time_last_digitUpdate_mode0 = time_milli;
+        }
+      }
+
+      if (face_timer2) {
+
+        timer2_set = false;
+        time_left2 = 1;
+
+
+        TIME_SHOWING = false;
+        TIME_SETTING = false;
+
+        if (time_milli - time_last_digitUpdate_mode0 > time_btw_digitUpdate_mode0) {
+
+          if (blinking == 0) {
+
+            Serial.println("Blinking 1 tim 1");
+            M5.dis.clear();
+            for (int i = 0; i < 25; i++) {
+              M5.dis.drawpix(i, colors[2]);
+            }
+            blinking = 1 ;
+          }
+          else {
+            Serial.println("Blinking 2 tim 2");
+            DisplayColor(two, 2);
+            blinking = 0;
+          }
+          time_last_digitUpdate_mode0 = time_milli;
+        }
+      }
+      if (shaken()) {
+        Serial.println("Shaken devide detected and entered the functio");
+        TIME_BLINKING = false;
+        TIME_SETTING = true;
+      }
+    }
+
+    //Refresh chip in equal intervals
+    if (time_milli - timeSinceLastChipRefresh > timeBtwChipRefresh) {
+
+      M5.IMU.getAccelData(&accX, &accY, &accZ);
+
+      timeSinceLastChipRefresh = time_milli;
     }
   }
-
-  //Refresh chip in equal intervals
-  if (time_milli - timeSinceLastChipRefresh > timeBtwChipRefresh) {
-
-    M5.IMU.getAccelData(&accX, &accY, &accZ);
-
-    timeSinceLastChipRefresh = time_milli;
-  }
-}
 }
 
 //--------------------------------------------------
@@ -680,9 +686,9 @@ void DisplayColor(int number[], int fillColor) {
 
 void DisplayInvertedColor(int number[], int fillColor) {
   M5.dis.clear();
-  for (int i = 0; i <25; i++)
+  for (int i = 0; i < 25; i++)
   {
-    if (number[24-i] == 1) {
+    if (number[24 - i] == 1) {
       M5.dis.drawpix(i, colors[fillColor]);
     }
   }
