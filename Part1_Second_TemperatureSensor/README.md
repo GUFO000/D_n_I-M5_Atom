@@ -33,4 +33,4 @@ The user either clicks the screen or taps the device to activate a given mode.
 d. Exiting an active mode:
 The user turns the device face-down, and the device returns to background reading mode with screen off.
 
-
+Two codes are provided. The first is the working prototype whihc only makes use og the M5 Stack Atom, while the second is being refined and includes a webpage to be consulted to have a better overview of the time passed. 
