@@ -6,5 +6,4 @@ This repositary contains the solution to the challenges proposed in the course f
 
 The only library used was the M5 Atom Library and the guide for installation can be found [here] (https://docs.m5stack.com/en/arduino/arduino_development).
 
-Comnsult README filed within individual directories for more information. 
 Consult README filed within individual directories for more information.
